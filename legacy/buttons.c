@@ -22,7 +22,11 @@
 struct buttonState button;
 
 #if !EMULATOR
-uint16_t buttonRead(void) { return gpio_port_read(BTN_PORT); }
+uint16_t buttonRead(void) {
+  uint16_t yes = (gpio_port_read(BTN_YES_PORT) & BTN_PIN_YES) ? BTN_PIN_YES : 0;
+  uint16_t no = (gpio_port_read(BTN_NO_PORT) & BTN_PIN_NO) ? BTN_PIN_NO : 0;
+  return yes | no;
+}
 #endif
 
 void buttonUpdate(void) {
