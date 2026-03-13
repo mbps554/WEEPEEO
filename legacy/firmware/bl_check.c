@@ -250,8 +250,8 @@ void check_and_replace_bootloader(bool shutdown_on_replace) {
 
   if (!known_bootloader(r, hash)) {
     layoutDialog(&bmp_icon_error, NULL, NULL, NULL, _("Unknown bootloader"),
-                 _("detected."), NULL, _("Unplug your Trezor"),
-                 _("contact our support."), NULL);
+                 _("detected."), NULL, _("Unplug your device"),
+                 _("contact support."), NULL);
     shutdown();
   }
 
@@ -269,7 +269,7 @@ void check_and_replace_bootloader(bool shutdown_on_replace) {
   // YOUR DEVICE.
 
   layoutDialog(&bmp_icon_warning, NULL, NULL, NULL, _("Updating bootloader"),
-               NULL, NULL, _("DO NOT UNPLUG"), _("YOUR TREZOR!"), NULL);
+               NULL, NULL, _("DO NOT UNPLUG"), _("YOUR DEVICE!"), NULL);
 
   // unlock sectors
   memory_write_unlock();
@@ -303,8 +303,8 @@ void check_and_replace_bootloader(bool shutdown_on_replace) {
   }
   // show info and halt
   layoutDialog(&bmp_icon_error, NULL, NULL, NULL, _("Bootloader update"),
-               _("broken."), NULL, _("Unplug your Trezor"),
-               _("contact our support."), NULL);
+               _("broken."), NULL, _("Unplug your device"),
+               _("contact support."), NULL);
   shutdown();
 #endif
   // prevent compiler warning when PRODUCTION==0
