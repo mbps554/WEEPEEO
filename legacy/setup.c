@@ -92,10 +92,19 @@ void setup(void) {
   // set GPIO for OLED display (RST=PC6, DC=PC7, CS=PC8)
   gpio_mode_setup(GPIOC, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE,
                   GPIO6 | GPIO7 | GPIO8);
+  gpio_set_output_options(GPIOC, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ,
+                          GPIO6 | GPIO7 | GPIO8);
+
+  // set initial pin states: CS high (deselected), DC low (command mode), RST high
+  gpio_set(GPIOC, GPIO8);    // CS high (deselected)
+  gpio_clear(GPIOC, GPIO7);  // DC low (command mode)
+  gpio_set(GPIOC, GPIO6);    // RST high (not in reset)
 
   // enable SPI 2 for OLED display (SCK=PB13, MOSI=PB15)
   gpio_mode_setup(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO13 | GPIO15);
   gpio_set_af(GPIOB, GPIO_AF5, GPIO13 | GPIO15);
+  gpio_set_output_options(GPIOB, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ,
+                          GPIO13 | GPIO15);
 
   //	spi_disable_crc(SPI2);
   spi_init_master(

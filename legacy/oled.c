@@ -159,10 +159,11 @@ void oledInit() {
 
   // Reset the LCD
   gpio_set(OLED_RST_PORT, OLED_RST_PIN);
-  delay(40);
+  delay(1000);                // ensure RST is stable high before pulling low
   gpio_clear(OLED_RST_PORT, OLED_RST_PIN);
-  delay(400);
+  delay(10000);               // hold RST low for reset pulse (~10ms)
   gpio_set(OLED_RST_PORT, OLED_RST_PIN);
+  delay(100000);              // wait for SSD1306 charge pump stabilization (~100ms)
 
   // init
   gpio_clear(OLED_CS_PORT, OLED_CS_PIN);  // SPI select
