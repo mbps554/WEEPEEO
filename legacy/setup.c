@@ -65,8 +65,8 @@ void setup(void) {
   // setup clock
   struct rcc_clock_scale clock = rcc_hse_8mhz_3v3[RCC_CLOCK_3V3_120MHZ];
   rcc_clock_setup_hse_3v3(&clock);
-
-  // enable GPIO clock - A (usb), B (spi), C (oled, buttons)
+  
+// enable GPIO clock - A (buttons, USB), B (SPI2), C (oled, buttons)
   rcc_periph_clock_enable(RCC_GPIOA);
   rcc_periph_clock_enable(RCC_GPIOB);
   rcc_periph_clock_enable(RCC_GPIOC);
@@ -85,13 +85,15 @@ void setup(void) {
   // enable CSS (Clock Security System)
   RCC_CR |= RCC_CR_CSSON;
 
-  // set GPIO for buttons
-  gpio_mode_setup(GPIOC, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO2 | GPIO5);
+  // set GPIO for buttons (external pull-ups on PCB, active-low)
+  gpio_mode_setup(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO8);  // B1 (Yes)
+  gpio_mode_setup(GPIOC, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO9);  // B2 (No)
 
-  // set GPIO for OLED display
-  gpio_mode_setup(GPIOC, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO6 | GPIO7 | GPIO8);
+  // set GPIO for OLED display (RST=PC6, DC=PC7, CS=PC8)
+  gpio_mode_setup(GPIOC, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE,
+                  GPIO6 | GPIO7 | GPIO8);
 
-  // enable SPI 2 for OLED display
+  // enable SPI 2 for OLED display (SCK=PB13, MOSI=PB15)
   gpio_mode_setup(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO13 | GPIO15);
   gpio_set_af(GPIOB, GPIO_AF5, GPIO13 | GPIO15);
 

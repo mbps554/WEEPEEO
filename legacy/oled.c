@@ -50,9 +50,9 @@
 
 #define SPI_BASE SPI2
 #define OLED_DC_PORT GPIOC
-#define OLED_DC_PIN GPIO7  // PC7 | Data/Command
+#define OLED_DC_PIN GPIO7   // PC7 | Data/Command
 #define OLED_CS_PORT GPIOC
-#define OLED_CS_PIN GPIO8  // PC8 | SPI Select
+#define OLED_CS_PIN GPIO8   // PC8 | SPI Select
 #define OLED_RST_PORT GPIOC
 #define OLED_RST_PIN GPIO6  // PC6 | Reset display
 

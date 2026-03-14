@@ -80,7 +80,7 @@ void check_lock_screen(void) {
   if ((layoutLast == layoutHomescreen || layoutLast == layoutBusyscreen) &&
       button.NoDown >= 114000 * 5) {
     layoutDialog(&bmp_icon_question, _("Cancel"), _("Lock Device"), NULL,
-                 _("Do you really want to"), _("lock your Trezor?"), NULL, NULL,
+                 _("Do you really want to"), _("lock your device?"), NULL, NULL,
                  NULL, NULL);
 
     // wait until NoButton is released

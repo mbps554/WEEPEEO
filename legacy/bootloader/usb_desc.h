@@ -71,7 +71,7 @@ static const struct usb_config_descriptor config = {
 };
 
 static const char *usb_strings[] = {
-    "SatoshiLabs",
-    "TREZOR",
+    "Kratee",
+    "Kratee Wallet",
     "000000000000000000000000",
 };

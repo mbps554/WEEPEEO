@@ -35,16 +35,28 @@ extern struct buttonState button;
 uint16_t buttonRead(void);
 void buttonUpdate(void);
 
-#ifndef BTN_PORT
-#define BTN_PORT GPIOC
+#ifndef BTN_YES_PORT
+#define BTN_YES_PORT GPIOA
+#endif
+
+#ifndef BTN_NO_PORT
+#define BTN_NO_PORT GPIOC
+#endif
+
+#ifndef BTN_YES_PORT
+#define BTN_YES_PORT GPIOA
+#endif
+
+#ifndef BTN_NO_PORT
+#define BTN_NO_PORT GPIOC
 #endif
 
 #ifndef BTN_PIN_YES
-#define BTN_PIN_YES GPIO2
+#define BTN_PIN_YES GPIO8
 #endif
 
 #ifndef BTN_PIN_NO
-#define BTN_PIN_NO GPIO5
+#define BTN_PIN_NO GPIO9
 #endif
 
 #endif

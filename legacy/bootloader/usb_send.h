@@ -38,7 +38,7 @@ static void send_msg_features(usbd_device *dev) {
   uint8_t response[64];
   memzero(response, sizeof(response));
   // response: Features message (id 17), payload len 26 / 41
-  //           - vendor = "trezor.io"
+  //           - vendor = "kratee"
   //           - major_version = VERSION_MAJOR
   //           - minor_version = VERSION_MINOR
   //           - patch_version = VERSION_PATCH
@@ -55,8 +55,8 @@ static void send_msg_features(usbd_device *dev) {
   // clang-format off
   const uint8_t feature_bytes[] = {
     0x0a,  // vendor field
-    0x09,  // vendor length
-    't', 'r', 'e', 'z', 'o', 'r', '.', 'i', 'o',
+    0x06,  // vendor length
+    'k', 'r', 'a', 't', 'e', 'e',
     0x10, VERSION_MAJOR,
     0x18, VERSION_MINOR,
     0x20, VERSION_PATCH,
@@ -65,7 +65,7 @@ static void send_msg_features(usbd_device *dev) {
     firmware_present ? 0x01 : 0x00,
     0xaa, 0x01, // model field
     0x01,      // model length
-    '1',
+    'K',
   };
 
   const uint8_t version_bytes[] = {
