@@ -43,6 +43,14 @@ void buttonUpdate(void);
 #define BTN_NO_PORT GPIOC
 #endif
 
+#ifndef BTN_YES_PORT
+#define BTN_YES_PORT GPIOA
+#endif
+
+#ifndef BTN_NO_PORT
+#define BTN_NO_PORT GPIOC
+#endif
+
 #ifndef BTN_PIN_YES
 #define BTN_PIN_YES GPIO8
 #endif

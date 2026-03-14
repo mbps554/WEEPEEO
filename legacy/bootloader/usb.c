@@ -489,7 +489,7 @@ static void rx_callback(usbd_device *dev, uint8_t ep) {
       for (int i = 3; i > 0; i--) {
         line[21] = '0' + i;
         layoutDialog(&bmp_icon_ok, NULL, NULL, NULL, "New firmware",
-                     "successfully installed.", NULL, "Your Trezor", line,
+                     "successfully installed.", NULL, "Your Kratee", line,
                      NULL);
         delay(30000 * 1000);
       }
@@ -548,7 +548,7 @@ static void usbInit(bool firmware_present) {
   usbd_register_set_config_callback(usbd_dev, set_config);
   usb21_setup(usbd_dev, firmware_present ? &bos_descriptor_no_landing
                                          : &bos_descriptor_landing);
-  webusb_setup(usbd_dev, "trezor.io/start");
+  webusb_setup(usbd_dev, "");
   winusb_setup(usbd_dev, USB_INTERFACE_INDEX_MAIN);
 }
 
@@ -557,14 +557,13 @@ static void checkButtons(void) {
   if (btn_final) {
     return;
   }
-  uint16_t state = gpio_port_read(BTN_PORT);
-  if ((state & (BTN_PIN_YES | BTN_PIN_NO)) != (BTN_PIN_YES | BTN_PIN_NO)) {
-    if ((state & BTN_PIN_NO) != BTN_PIN_NO) {
-      btn_left = true;
-    }
-    if ((state & BTN_PIN_YES) != BTN_PIN_YES) {
-      btn_right = true;
-    }
+  uint16_t state_yes = gpio_port_read(BTN_YES_PORT);
+  uint16_t state_no = gpio_port_read(BTN_NO_PORT);
+  if ((state_no & BTN_PIN_NO) != BTN_PIN_NO) {
+    btn_left = true;
+  }
+  if ((state_yes & BTN_PIN_YES) != BTN_PIN_YES) {
+    btn_right = true;
   }
   if (btn_left) {
     oledBox(0, 0, 3, 3, true);
