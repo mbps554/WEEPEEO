@@ -66,13 +66,13 @@ void setup(void) {
   struct rcc_clock_scale clock = rcc_hse_8mhz_3v3[RCC_CLOCK_3V3_120MHZ];
   rcc_clock_setup_hse_3v3(&clock);
 
-  // enable GPIO clock - A (oled), B(oled), C (buttons)
+  // enable GPIO clock - A (usb), B (spi), C (oled, buttons)
   rcc_periph_clock_enable(RCC_GPIOA);
   rcc_periph_clock_enable(RCC_GPIOB);
   rcc_periph_clock_enable(RCC_GPIOC);
 
   // enable SPI clock
-  rcc_periph_clock_enable(RCC_SPI1);
+  rcc_periph_clock_enable(RCC_SPI2);
 
   // enable RNG
   rcc_periph_clock_enable(RCC_RNG);
@@ -89,22 +89,21 @@ void setup(void) {
   gpio_mode_setup(GPIOC, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP, GPIO2 | GPIO5);
 
   // set GPIO for OLED display
-  gpio_mode_setup(GPIOA, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO4);
-  gpio_mode_setup(GPIOB, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO0 | GPIO1);
+  gpio_mode_setup(GPIOC, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO6 | GPIO7 | GPIO8);
 
-  // enable SPI 1 for OLED display
-  gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO5 | GPIO7);
-  gpio_set_af(GPIOA, GPIO_AF5, GPIO5 | GPIO7);
+  // enable SPI 2 for OLED display
+  gpio_mode_setup(GPIOB, GPIO_MODE_AF, GPIO_PUPD_NONE, GPIO13 | GPIO15);
+  gpio_set_af(GPIOB, GPIO_AF5, GPIO13 | GPIO15);
 
-  //	spi_disable_crc(SPI1);
+  //	spi_disable_crc(SPI2);
   spi_init_master(
-      SPI1, SPI_CR1_BAUDRATE_FPCLK_DIV_8, SPI_CR1_CPOL_CLK_TO_0_WHEN_IDLE,
+      SPI2, SPI_CR1_BAUDRATE_FPCLK_DIV_8, SPI_CR1_CPOL_CLK_TO_0_WHEN_IDLE,
       SPI_CR1_CPHA_CLK_TRANSITION_1, SPI_CR1_DFF_8BIT, SPI_CR1_MSBFIRST);
-  spi_enable_ss_output(SPI1);
-  //	spi_enable_software_slave_management(SPI1);
-  //	spi_set_nss_high(SPI1);
-  //	spi_clear_mode_fault(SPI1);
-  spi_enable(SPI1);
+  spi_enable_ss_output(SPI2);
+  //	spi_enable_software_slave_management(SPI2);
+  //	spi_set_nss_high(SPI2);
+  //	spi_clear_mode_fault(SPI2);
+  spi_enable(SPI2);
 
   // enable OTG_FS
   gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_PULLUP, GPIO10);
@@ -136,7 +135,7 @@ void setupApp(void) {
   // hotfix for old bootloader
   gpio_mode_setup(GPIOA, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO9);
   spi_init_master(
-      SPI1, SPI_CR1_BAUDRATE_FPCLK_DIV_8, SPI_CR1_CPOL_CLK_TO_0_WHEN_IDLE,
+      SPI2, SPI_CR1_BAUDRATE_FPCLK_DIV_8, SPI_CR1_CPOL_CLK_TO_0_WHEN_IDLE,
       SPI_CR1_CPHA_CLK_TRANSITION_1, SPI_CR1_DFF_8BIT, SPI_CR1_MSBFIRST);
 
   gpio_mode_setup(GPIOA, GPIO_MODE_AF, GPIO_PUPD_PULLUP, GPIO10);
