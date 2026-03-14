@@ -1,49 +1,76 @@
-name: Build Trezor 1 Firmware
+name: Build Legacy Firmware
 
 on:
   push:
     branches:
       - main
-      - develop
   pull_request:
     branches:
       - main
-      - develop
   workflow_dispatch:
-    inputs:
-      ref:
-        description: 'Git reference (branch, tag, or commit)'
-        required: false
-        default: 'main'
 
 jobs:
-  build-trezor1:
+  build-legacy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
-      
-      - name: Build Trezor 1 (Legacy) firmware
+
+      - name: Install ARM toolchain
         run: |
-          chmod +x ./build-docker.sh
-          ./build-docker.sh --models T1B1 --skip-bitcoinonly main
+          sudo apt-get update
+          sudo apt-get install -y gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
+
+      - name: Install Python and protobuf tools
+        run: |
+          sudo apt-get install -y python3 python3-pip protobuf-compiler
+          pip3 install trezor
+
+      - name: Build libopencm3
+        run: |
+          cd vendor/libopencm3
+          make
+
+      - name: Build legacy bootloader
+        run: |
+          cd legacy/bootloader
+          make PRODUCTION=0
         env:
           PRODUCTION: 0
-      
-      - name: Upload firmware artifacts
+
+      - name: Build legacy firmware
+        run: |
+          cd legacy/firmware
+          make PRODUCTION=0
+        env:
+          PRODUCTION: 0
+
+      - name: List build outputs
+        run: |
+          echo "=== Bootloader ==="
+          ls -la legacy/bootloader/bootloader.bin 2>/dev/null || echo "No bootloader.bin"
+          echo "=== Firmware ==="
+          ls -la legacy/firmware/trezor.bin 2>/dev/null || echo "No trezor.bin"
+          ls -la legacy/firmware/firmware*.bin 2>/dev/null || echo "No firmware*.bin"
+
+      - name: Upload bootloader artifact
         uses: actions/upload-artifact@v4
         with:
-          name: trezor1-firmware
-          path: |
-            build/legacy-T1B1/
+          name: legacy-bootloader
+          path: legacy/bootloader/bootloader.bin
           retention-days: 30
         if: always()
-      
-      - name: List build artifacts
-        run: |
-          echo "=== Build Artifacts ==="
-          find build/legacy-T1B1 -type f | head -20 || echo "No artifacts found"
+
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: legacy-firmware
+          path: |
+            legacy/firmware/trezor.bin
+            legacy/firmware/firmware*.bin
+          retention-days: 30
+        if: always()
