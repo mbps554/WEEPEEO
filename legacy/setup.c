@@ -65,8 +65,8 @@ void setup(void) {
   // setup clock
   struct rcc_clock_scale clock = rcc_hse_8mhz_3v3[RCC_CLOCK_3V3_120MHZ];
   rcc_clock_setup_hse_3v3(&clock);
-
-  // enable GPIO clock - A (buttons, USB), B (SPI2), C (oled, buttons)
+  
+// enable GPIO clock - A (buttons, USB), B (SPI2), C (oled, buttons)
   rcc_periph_clock_enable(RCC_GPIOA);
   rcc_periph_clock_enable(RCC_GPIOB);
   rcc_periph_clock_enable(RCC_GPIOC);
